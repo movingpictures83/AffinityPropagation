@@ -2,6 +2,7 @@
 # Language: Python
 # Input: CSV (network)
 # Output: CSV (clusters)
+# Tested with: PluMA 1.0, Python 2.7
 
 PluMA plugin that runs the Affinity Propagation (AP) clustering algorithm (Frey and Dueck, 2007).
 AP is particularly useful when finding clusters in a signed and weighted network, and you do not
