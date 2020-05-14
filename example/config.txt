@@ -1,2 +1,2 @@
 Prefix plugins/AffinityPropagation/example/
-Plugin AffinityPropagation inputfile corrP.csv outputfile corrP.clusters.csv
+Plugin AffinityPropagation inputfile corrP.csv outputfile corrP
