@@ -67,22 +67,22 @@ class AffinityPropagationPlugin(CSV2GMLPlugin):
    def run(self):
       CSV2GMLPlugin.run(self)
       eps = 1e-8
-      ap = AffinityPropagation(preference=0,affinity='precomputed')
+      ap = AffinityPropagation(preference=0,affinity='precomputed',convergence_iter=200)
       self.removeSingletonsAndPureVillains()
       af = ap.fit(self.ADJ)
       self.cluster_centers_indices = af.cluster_centers_indices_
       self.labels = af.labels_
       self.n_clusters_ = len(self.cluster_centers_indices)
-
       
 
    def output(self, filename):
-      filestuff = open(filename, 'w')
-
+      filestuff = open(filename+".AP.csv", 'w')
+      centroidfile = open(filename+".centroids.csv", 'w')
+      centroidfile.write("\"\",\"x\"\n")
       cluster = 0
       for index in self.cluster_centers_indices:
          filestuff.write("\"\",\"x\"\n")
-         
+         centroidfile.write("\""+str(cluster)+"\","+self.bacteria[index].strip()+"\n")   
          count = 0
          innercount = 1
          for label in self.labels:
