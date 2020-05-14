@@ -1,7 +1,7 @@
 # AffinityPropagation
 # Language: Python
 # Input: CSV (network)
-# Output: CSV (clusters)
+# Output: prefix (cluster and centroids files)
 # Tested with: PluMA 1.0, Python 2.7
 
 PluMA plugin that runs the Affinity Propagation (AP) clustering algorithm (Frey and Dueck, 2007).
@@ -37,3 +37,7 @@ The output CSV file of clusters will be in the following format:
 Each "","x" marks the start of a new cluster.  Note PluMA also has a ClusterCSV2NOA plugin
 that can convert a file like this to a NOde Attribute (NOA) file for Cytoscape.  Nodes
 can then be visualized using their cluster identifier as an attribute.
+
+The output file of centroids will be similar to the above, with one for each cluster and its corresponding centroid.
+
+Output files will be (prefix).AP.csv and (prefix).centroids.csv
