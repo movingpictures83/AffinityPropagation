@@ -29,6 +29,8 @@ def inSameCluster(bac1, bac2, clusters):
          else:
             return False
 
+def unquote(s):
+   return s[1:len(s)-1]
 
 
 class AffinityPropagationPlugin(CSV2GMLPlugin):
@@ -39,7 +41,7 @@ class AffinityPropagationPlugin(CSV2GMLPlugin):
    def removeSingletonsAndPureVillains(self):
       n = len(self.ADJ)
       singletons = []
-      singletonbac = []
+      self.singletonbac = []
 
       for i in range(n):
          count = 0
@@ -48,7 +50,7 @@ class AffinityPropagationPlugin(CSV2GMLPlugin):
                count += 1
          if (count == 0):
             singletons.append(i)
-            singletonbac.append(self.bacteria[i])
+            self.singletonbac.append(self.bacteria[i])
 
       newADJ = []
       for i in range(n):
@@ -60,7 +62,7 @@ class AffinityPropagationPlugin(CSV2GMLPlugin):
             newADJ.append(newrow)
       self.ADJ = newADJ
 
-      for bac in singletonbac:
+      for bac in self.singletonbac:
          self.bacteria.remove(bac)
 
 
@@ -98,14 +100,16 @@ class AffinityPropagationPlugin(CSV2GMLPlugin):
 
    def output(self, filename):
       filestuff = open(filename+".AP.csv", 'w')
-      centroidfile = open(filename+".centroids.csv", 'w')
-      centroidfile.write("\"\",\"x\"\n")
+      centroidfile = open(filename+".centroids.noa", 'w')
+      #centroidfile.write("\"\",\"x\"\n")
+      centroidfile.write("Name\tCentroid\n")
       cluster = 0
       printedcluster = 1
       for index in self.cluster_centers_indices:
        if (index != -1):
          filestuff.write("\"\",\"x\"\n")
-         centroidfile.write("\""+str(printedcluster)+"\","+self.bacteria[index].strip()+"\n")   
+         #centroidfile.write("\""+str(printedcluster)+"\","+self.bacteria[index].strip()+"\n")   
+         centroidfile.write(unquote(self.bacteria[index].strip())+"\t"+unquote(self.bacteria[index].strip())+" (C)\n")   
          count = 0
          innercount = 1
          for label in self.labels:
@@ -116,6 +120,11 @@ class AffinityPropagationPlugin(CSV2GMLPlugin):
          printedcluster += 1
        cluster += 1
  
+      for index in range(len(self.bacteria)):
+          if (index not in self.cluster_centers_indices):
+              centroidfile.write(unquote(self.bacteria[index].strip())+"\t"+unquote(self.bacteria[index].strip())+"\n")
+      for bac in self.singletonbac:
+          centroidfile.write(unquote(bac.strip())+"\t"+unquote(bac.strip())+"\n")
       return
 
 
